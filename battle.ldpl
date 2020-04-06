@@ -3,7 +3,6 @@
 include "warrior.ldpl"
 
 data:
-
 	# Grog Warrior
 	grog is map of text
 	# Bak Warrior
@@ -77,9 +76,4 @@ procedure:
 	end if
 	# display the winner
 	display winner:"name" " defeated " loser:"name" "!" crlf
-
-
-
-
-
 

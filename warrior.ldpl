@@ -62,6 +62,3 @@ procedure:
 			display warrior:"name" " hp: " warrior:"hp" " damage: " warrior:"damage" crlf
 	end sub
 
-
-
-
