@@ -1,0 +1,67 @@
+# Warrior Functions
+# These procedures will be used for our "Warrior" map objects
+
+procedure:
+	# Initializes a new Warrior object
+	sub warrior.new 
+		parameters:
+			# The object to initialize
+			warrior is map of text 
+			# The properties of the object
+			# note in the map every property is a text object
+			# but in the new procedure we pass them as their desired type because it is more intuitive
+			name is text
+			hp is number
+			damage is number
+
+		procedure:
+			# store the values in the warrior object passed
+			store name in warrior:"name"
+			store hp in warrior:"hp"
+			store damage in warrior:"damage"
+	end sub
+	
+	# allows attacker to attack attacked
+	# subtracts attacker's damge from attacked hp
+	sub warrior.attack
+		parameters:
+			# the warrior that will be the attacker
+			attacker is map of text
+			# the warrior that will get attacked
+			attacked is map of text
+		local data:
+			# We need to create some temp variables to hold the converted values
+			# conversion variable
+			attacker.damage is number
+			# conversion variable
+			attacked.hp is number
+			# solver variable
+			new_hp is number
+		procedure:
+			# convert the attacker's damage and attacked warrior's hp to numbers so we can do math with them
+			store attacker:"damage" in attacker.damage
+			store attacked:"hp" in attacked.hp
+
+			# subtract the attacker's damage from the attacked warrior's hp
+			in new_hp solve attacked.hp - attacker.damage
+
+			# store the attacked warrior's new hp back into the object
+			store new_hp in attacked:"hp"
+
+			# display output
+			display attacker:"name" " attacked " attacked:"name" " for " attacker:"damage" " damage!" crlf
+
+	end sub
+	
+	# displays the warriors stats/state
+	sub warrior.display
+		parameters:
+			# warrior to print
+			warrior is map of text
+		procedure:
+			display warrior:"name" " hp: " warrior:"hp" " damage: " warrior:"damage" crlf
+	end sub
+
+
+
+

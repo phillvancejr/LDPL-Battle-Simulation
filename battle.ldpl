@@ -1,0 +1,85 @@
+# Battle Simulator
+# In LDPL we can use Maps to simulate objects
+include "warrior.ldpl"
+
+data:
+
+	# Grog Warrior
+	grog is map of text
+	# Bak Warrior
+	bak is map of text 
+	
+	# map of objects to allow for easy manipulation of objects in a generic (without knowing which object we're targeting) way
+	warriors is map of map of text
+	# temp warriors
+	w1 is map of text
+	w2 is map of text 
+	# temp names
+	w1.name is text 
+	w2.name is text 
+	# temp warriors
+	winner is map of text 
+	loser is map of text 
+
+	# used to randomize references to the warriors
+	random_num is number 
+
+procedure:
+	# create warriors
+	# Warrior -> name: Grog hp: 100 damage: 10
+	call warrior.new with grog "Grog" 100 10 
+	# Warrior -> name: Bak hp: 100 damge: 10
+	call warrior.new with bak "Bak" 100 10 
+
+	# create map of warriors which allows for updating the warrior maps while keeping references to them generic in the loop below
+	copy grog to warriors:"Grog"
+	copy bak to warriors:"Bak"
+
+	while warriors:"Grog":"hp" is greater than "0" and warriors:"Bak":"hp" is greater than "0" do
+		# generate random number
+		get random in random_num 
+		
+		# on each iteration of the loop we want w1 and w2 to be assigned a random warrior object
+		# that way we can do our operations with random warriors instead of specific ones
+		if random_num is less than 0.5 then
+			copy warriors:"Grog" to w1
+			copy warriors:"Bak" to w2
+		else	
+			copy warriors:"Bak" to w1
+			copy warriors:"Grog" to w2
+		end if
+	
+		# make w1 attack w2
+		call warrior.attack with w1 w2 
+		# show the warriors stats
+		call warrior.display with w1
+		call warrior.display with w2 
+		# empty new line
+		display crlf
+		
+		# store names so we can use them to index into the warriors map
+		store w1:"name" in w1.name
+		store w2:"name" in w2.name
+	
+		# store back in warrior map
+		copy w1 to warriors:w1.name
+		copy w2 to warriors:w2.name
+	
+	repeat
+	
+	# assign a warrior to winner and one to loser based on their hp
+	if warriors:"Grog":"hp" is greater than "0" then
+		copy warriors:"Grog" to winner
+		copy warriors:"Bak" to loser
+	else	
+		copy warriors:"Bak" to winner
+		copy warriors:"Grog" to loser
+	end if
+	# display the winner
+	display winner:"name" " defeated " loser:"name" "!" crlf
+
+
+
+
+
+
